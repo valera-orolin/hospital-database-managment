@@ -15,9 +15,12 @@ function executeQuery($query, $params = [])
         mysqli_stmt_bind_param($stmt, $types, ...$params);
     }
 
-    mysqli_stmt_execute($stmt);
+    $executionResult = mysqli_stmt_execute($stmt);
 
-    $result = mysqli_stmt_get_result($stmt);
-
-    return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    if (str_starts_with(trim(strtolower($query)), 'insert') || str_starts_with(trim(strtolower($query)), 'update') || str_starts_with(trim(strtolower($query)), 'delete')) {
+        return $executionResult;
+    } else {
+        $result = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }
 }

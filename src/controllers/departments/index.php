@@ -29,6 +29,11 @@ foreach ($departments as &$department) {
         'url' => "/controllers/doctors/index.php?doctorid=" . $department['head'],
         'text' => $doctor[0]['name']
     ];
+
+    $department['doctors'] = [
+        'url' => "/controllers/doctors/index.php?departmentid=" . $department['departmentid'],
+        'text' => "Doctors"
+    ];
 }
 
 $blade = new Blade('../../views', '../../cache');

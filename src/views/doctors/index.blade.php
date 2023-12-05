@@ -4,36 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">  
     <title>Hospital</title>
 </head>
-<body>
-    
-    @include('partials.header')
+<body class="bg-gray-100 flex items-center justify-center">
 
-    <div>Doctors</div>
+    <div class="container mx-auto px-4">
+        <div class="bg-white shadow-md rounded my-6">
+            <div class="text-center py-4">
+                @include('partials.header')
+            </div>
 
-    <form action="/controllers/doctors/index.php" method="get">
-        <div>
-            Filter by
-            <input type="text" name="personalnumber" placeholder="Personal Number">
-            <input type="text" name="name" placeholder="Name">
-            <input type="text" name="position" placeholder="Position">
+            <div class="px-12 pb-10">
+                <div class="text-center text-5xl mb-8 font-bold">Doctors</div>
+
+                <form action="/controllers/doctors/index.php" method="get" class="mb-4">
+                    <div>
+                        Filter by
+                        <input type="text" name="personalnumber" placeholder="Personal Number" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="name" placeholder="Name" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="position" placeholder="Position" class="border rounded px-3 py-2 mr-2">
+                    </div>
+                    <div class="mt-2">
+                        Sort by
+                        <select name="sort" class="border rounded px-3 py-2 mr-2">
+                            <option value="">Select field</option>
+                            <option value="name">Name</option>
+                        </select>
+                        <select name="direction" class="border rounded px-3 py-2 mr-2">
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </div>
+                    <input type="submit" value="Submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-200">
+                </form>
+
+                <form action="/controllers/doctors/store.php" method="post" class="mb-4">
+                    <div class="space-y-2">
+                        <input type="text" name="personalnumber" placeholder="Personal Number" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="name" placeholder="Name" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="position" placeholder="Position" class="border rounded px-3 py-2 mr-2">
+                    </div>
+                    <input type="submit" value="Create New" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-200">
+                </form>
+
+                <table class="w-full text-md bg-white shadow-md rounded mb-4">
+                    <thead>
+                        <tr class="border-b">
+                            @if (isset($doctors[0]))
+                                @foreach ($doctors[0] as $key => $value)
+                                    <th class="text-left p-3 px-5">{{ $key }}</th>
+                                @endforeach
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($doctors as $doctor)
+                            <tr class="border-b hover:bg-orange-100">
+                                @foreach ($doctor as $value)
+                                    @if (is_array($value) && isset($value['url']) && isset($value['text']))
+                                        <td class="p-3 px-5"><a href="{{ $value['url'] }}" class="text-gray-500 hover:text-gray-900 hover:underline">{{ $value['text'] }}</a></td>
+                                    @else
+                                        <td class="p-3 px-5">{{ $value }}</td>
+                                    @endif
+                                @endforeach
+                                <td><button class="edit-button text-green-500 p-3 px-5"><i class="fas fa-edit"></i></button></td>
+                                <td class="text-red-500 p-3 px-5">
+                                    <form id="delete-form-{{ $doctor['doctorid'] }}" action="/controllers/doctors/destroy.php" method="post" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                        <input type="hidden" name="doctorid" value="{{ $doctor['doctorid'] }}">
+                                        <button type="submit" class="bg-transparent border-none">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>                             
+                            </tr>
+                            <tr class="border-b hidden">
+                                <form id="edit-form-{{ $doctor['doctorid'] }}" action="/controllers/doctors/update.php" method="post">
+                                    <td class="p-3 px-5"><input type="hidden" name="doctorid" value="{{ $doctor['doctorid'] }}"></td>
+                                    <td class="p-3 px-5"><input type="text" name="personalnumber" value="{{ $doctor['personalnumber'] }}" class="border-none focus:outline-none focus:ring-0"></td>
+                                    <td class="p-3 px-5"><input type="text" name="name" value="{{ $doctor['name'] }}" class="border-none focus:outline-none focus:ring-0"></td>
+                                    <td class="p-3 px-5"><input type="text" name="position" value="{{ $doctor['position'] }}" class="border-none focus:outline-none focus:ring-0"></td>
+                                    <td class="p-3 px-5 text-blue-500 cursor-pointer">
+                                        <button type="submit" class="bg-transparent border-none">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </td>                    
+                                </form>                           
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div>
-            Sort by
-            <select name="sort">
-                <option value="">Select field</option>
-                <option value="name">Name</option>
-            </select>
-            <select name="direction">
-                <option value="asc">Ascending</option>
-                <option value="desc">Descending</option>
-            </select>
-        </div>
-        <input type="submit" value="Submit">
-    </form>
+    </div>
     
-    @include('partials.table', ['items' => $doctors])
-    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var rows = document.querySelectorAll("tr.border-b.hidden");
+            rows.forEach((row) => {
+                row.style.display = 'none';
+            });
+        
+            var buttons = document.querySelectorAll(".text-green-500");
+            buttons.forEach((button) => {
+                button.addEventListener('click', function() {
+                    var parentRow = this.parentNode.parentNode;
+                    var nextRow = parentRow.nextElementSibling;
+                    if (nextRow.style.display === 'none') {
+                        nextRow.style.display = 'table-row';
+                    } else {
+                        nextRow.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
