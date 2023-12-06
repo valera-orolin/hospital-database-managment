@@ -24,13 +24,15 @@ if (!empty($sort)) {
 $departments = executeQuery($query, $params);
 
 foreach ($departments as &$department) {
+    
     $doctor = executeQuery("SELECT name FROM doctor WHERE doctorid = ?", [$department['head']]);
-    $department['head'] = [
+    $department['link-head'] = [
         'url' => "/controllers/doctors/index.php?doctorid=" . $department['head'],
         'text' => $doctor[0]['name']
     ];
+    
 
-    $department['doctors'] = [
+    $department['link-doctors'] = [
         'url' => "/controllers/doctors/index.php?departmentid=" . $department['departmentid'],
         'text' => "Doctors"
     ];

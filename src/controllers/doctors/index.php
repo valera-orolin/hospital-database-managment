@@ -30,9 +30,5 @@ if (!empty($sort)) {
 
 $doctors = executeQuery($query, $params);
 
-foreach ($doctors as &$doctor) {
-
-}
-
 $blade = new Blade('../../views', '../../cache');
 echo $blade->make('doctors.index', ['doctors' => $doctors])->render();

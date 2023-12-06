@@ -11,7 +11,7 @@ try {
     if ($executionResult) {
         header("Location: /controllers/doctors/index.php");
     } else {
-        throw new Exception('Failed to delete the record.');
+        throw new Exception();
     }
 } catch (Exception $e) {
     echo "<script>alert('Failed to delete the record.'); window.location.href='/controllers/doctors/index.php';</script>";
