@@ -92,9 +92,17 @@
                                 <tr class="border-b hidden">
                                     <form id="edit-form-{{ $patient['personalnumber'] }}" action="/controllers/patients/update.php" method="post">
                                         @foreach ($patient as $key => $value)
-                                            <td class="p-3 px-5">
-                                                <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
-                                            </td>
+                                            @if (strpos($key, 'link-') === 0)
+                                                <td class="p-3 px-5"></td>
+                                            @elseif ($key != 'personalnumber')
+                                                <td class="p-3 px-5">
+                                                    <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
+                                                </td>
+                                            @else
+                                                <td class="p-3 px-5">
+                                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                                </td>
+                                            @endif
                                         @endforeach
                                         <td class="p-3 px-5 text-blue-500 cursor-pointer">
                                             <button type="submit" class="bg-transparent border-none">

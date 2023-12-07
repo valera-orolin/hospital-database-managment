@@ -4,6 +4,7 @@ require '../../vendor/autoload.php';
 use Jenssegers\Blade\Blade;
 
 $nurse = $_GET['nurse'] ?? '';
+$nurseid = $_GET['nurseid'] ?? '';
 $block = $_GET['block'] ?? '';
 $dt_time_start = $_GET['dt_time_start'] ?? '';
 $dt_time_end = $_GET['dt_time_end'] ?? '';
@@ -17,6 +18,11 @@ if (!empty($dt_time_start) && !empty($dt_time_end)) {
     $query .= " AND dt_time_start >= ? AND dt_time_end <= ?";
     $params[] = $dt_time_start;
     $params[] = $dt_time_end;
+}
+
+if (!empty($nurseid)) {
+    $query .= " AND nurse = ?";
+    $params[] = $nurseid;
 }
 
 if (!empty($sort)) {

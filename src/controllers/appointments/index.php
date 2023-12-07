@@ -5,12 +5,18 @@ use Jenssegers\Blade\Blade;
 
 $patient = $_GET['patient'] ?? '';
 $doctorName = $_GET['doctor'] ?? '';
+$doctorid = $_GET['doctorid'] ?? '';
 $nurseName = $_GET['nurse'] ?? '';
 $sort = $_GET['sort'] ?? '';
 $direction = $_GET['direction'] ?? 'asc';
 
 $query = "SELECT * FROM appointment WHERE patient LIKE ? AND doctor IN (SELECT doctorid FROM doctor WHERE name LIKE ?) AND nurse IN (SELECT nurseid FROM nurse WHERE name LIKE ?)";
 $params = ['%' . $patient . '%', '%' . $doctorName . '%', '%' . $nurseName . '%'];
+
+if (!empty($doctorid)) {
+    $query .= " AND doctor = ?";
+    $params[] = $doctorid;
+}
 
 if (!empty($sort)) {
     if ($sort == 'doctor') {
@@ -24,6 +30,12 @@ $appointments = executeQuery($query, $params);
 
 foreach ($appointments as &$appointment) {
     
+    $patient = executeQuery("SELECT name FROM patient WHERE personalnumber = ?", [$appointment['patient']]);
+    $appointment['link-patient'] = [
+        'url' => "/controllers/patients/index.php?personalnumber=" . $appointment['patient'],
+        'text' => $patient[0]['name']
+    ];
+
     $doctor = executeQuery("SELECT name FROM doctor WHERE doctorid = ?", [$appointment['doctor']]);
     $appointment['link-doctor'] = [
         'url' => "/controllers/doctors/index.php?doctorid=" . $appointment['doctor'],

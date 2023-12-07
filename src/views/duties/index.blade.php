@@ -74,7 +74,6 @@
                                             <td class="p-3 px-5">{{ $value }}</td>
                                         @endif
                                     @endforeach
-                                    <td><button class="edit-button text-green-500 p-3 px-5"><i class="fas fa-edit"></i></button></td>
 
                                     <!-- Delete form -->
                                     <td class="text-red-500 p-3 px-5">
@@ -96,8 +95,6 @@
             </div>
         </div>
     </div>
-
-    <script src="/../../js/script.js"></script>
 
 </body>
 </html>

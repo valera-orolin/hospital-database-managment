@@ -93,7 +93,7 @@
                                 <tr class="border-b hidden">
                                     <form id="edit-form" action="/controllers/medications/update.php" method="post">
                                         @foreach ($medication as $key => $value)
-                                            @if ($key != 'medicationeid')
+                                            @if ($key != 'medicationid')
                                                 <td class="p-3 px-5">
                                                     <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
                                                 </td>

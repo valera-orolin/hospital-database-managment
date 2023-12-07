@@ -34,10 +34,10 @@ foreach ($prescriptions as &$prescription) {
         'text' => $doctor[0]['name']
     ];
     
-    $patient = executeQuery("SELECT personalnumber FROM patient WHERE personalnumber = ?", [$prescription['patient']]);
+    $patient = executeQuery("SELECT name FROM patient WHERE personalnumber = ?", [$prescription['patient']]);
     $prescription['link-patient'] = [
         'url' => "/controllers/patients/index.php?personalnumber=" . $prescription['patient'],
-        'text' => $patient[0]['personalnumber']
+        'text' => $patient[0]['name']
     ];
     
     $medication = executeQuery("SELECT name FROM medication WHERE medicationid = ?", [$prescription['medication']]);

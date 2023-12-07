@@ -24,5 +24,12 @@ if (!empty($sort)) {
 
 $nurses = executeQuery($query, $params);
 
+foreach ($nurses as &$nurse) { 
+    $nurse['link-duties'] = [
+        'url' => "/controllers/duties/index.php?nurseid=" . $nurse['nurseid'],
+        'text' => "Duties"
+    ];
+}
+
 $blade = new Blade('../../views', '../../cache');
 echo $blade->make('nurses.index', ['nurses' => $nurses])->render();

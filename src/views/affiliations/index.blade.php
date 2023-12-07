@@ -24,7 +24,11 @@
                         Filter by
                         <input type="text" name="doctor" placeholder="Doctor" class="border rounded px-3 py-2 mr-2">
                         <input type="text" name="department" placeholder="Department" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="isaffiliationprimary" placeholder="Is Affiliation Primary" class="border rounded px-3 py-2 mr-2">
+                        <select name="isaffiliationprimary" class="border rounded px-3 py-2 mr-2">
+                            <option value="">Is Affiliation Primary</option>
+                            <option value="1">True</option>
+                            <option value="false">False</option>
+                        </select>
                     </div>
                     <div class="mt-2 space-y-2">
                         Sort by

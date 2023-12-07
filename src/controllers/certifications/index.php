@@ -13,13 +13,9 @@ $direction = $_GET['direction'] ?? 'asc';
 $query = "SELECT * FROM certification WHERE doctor IN (SELECT doctorid FROM doctor WHERE name LIKE ?) AND `procedure` IN (SELECT procedureid FROM `procedure` WHERE name LIKE ?)";
 $params = ['%' . $doctorName . '%', '%' . $procedureName . '%'];
 
-if (!empty($date_certificationstart)) {
-    $query .= " AND date_certificationstart = ?";
+if (!empty($date_certificationstart) && !empty($date_certificationend)) {
+    $query .= " AND date_certificationstart >= ? AND date_certificationend <= ?";
     $params[] = $date_certificationstart;
-}
-
-if (!empty($date_certificationend)) {
-    $query .= " AND date_certificationend = ?";
     $params[] = $date_certificationend;
 }
 

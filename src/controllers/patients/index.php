@@ -24,5 +24,18 @@ if (!empty($sort)) {
 
 $patients = executeQuery($query, $params);
 
+foreach ($patients as &$patient) {
+
+    $patient['link-diagnoses'] = [
+        'url' => "/controllers/diagnoses/index.php?patient=" . $patient['personalnumber'],
+        'text' => "Diagnoses"
+    ];
+
+    $patient['link-allergies'] = [
+        'url' => "/controllers/allergies/index.php?patient=" . $patient['personalnumber'],
+        'text' => "Allergies"
+    ];
+}
+
 $blade = new Blade('../../views', '../../cache');
 echo $blade->make('patients.index', ['patients' => $patients])->render();

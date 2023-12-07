@@ -69,7 +69,7 @@
                                     @foreach ($doctor as $value)
                                         @if (is_array($value) && isset($value['url']) && isset($value['text']))
                                             <td class="p-3 px-5"><a href="{{ $value['url'] }}" class="text-gray-500 hover:text-gray-900 hover:underline">{{ $value['text'] }}</a></td>
-                                        @else
+                                        @elseif (!is_array($value))
                                             <td class="p-3 px-5">{{ $value }}</td>
                                         @endif
                                     @endforeach
@@ -90,7 +90,9 @@
                                 <tr class="border-b hidden">
                                     <form id="edit-form-{{ $doctor['doctorid'] }}" action="/controllers/doctors/update.php" method="post">
                                         @foreach ($doctor as $key => $value)
-                                            @if ($key != 'doctorid')
+                                            @if (strpos($key, 'link-') === 0)
+                                                <td class="p-3 px-5"></td>
+                                            @elseif ($key != 'doctorid')
                                                 <td class="p-3 px-5">
                                                     <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
                                                 </td>
@@ -105,7 +107,7 @@
                                                 <i class="fas fa-check"></i>
                                             </button>
                                         </td>                    
-                                    </form>                           
+                                    </form>          
                                 </tr>                            
                             @endforeach
                         </tbody>

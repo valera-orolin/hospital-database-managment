@@ -81,7 +81,7 @@
                                 <tr class="border-b hidden">
                                     <form id="edit-form" action="/controllers/rooms/update.php" method="post">
                                         @foreach ($room as $key => $value)
-                                            @if ($key != 'blockid')
+                                            @if ($key != 'roomnumber')
                                                 <td class="p-3 px-5">
                                                     <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
                                                 </td>

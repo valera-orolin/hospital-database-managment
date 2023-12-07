@@ -30,5 +30,13 @@ if (!empty($sort)) {
 
 $hospitalizations = executeQuery($query, $params);
 
+foreach ($hospitalizations as &$hospitalization) {
+    $patient = executeQuery("SELECT name FROM patient WHERE personalnumber = ?", [$hospitalization['patient']]);
+    $hospitalization['link-patient'] = [
+        'url' => "/controllers/patients/index.php?personalnumber=" . $hospitalization['patient'],
+        'text' => $patient[0]['name']
+    ];
+}
+
 $blade = new Blade('../../views', '../../cache');
 echo $blade->make('hospitalizations.index', ['hospitalizations' => $hospitalizations])->render();

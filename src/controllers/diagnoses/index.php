@@ -6,6 +6,7 @@ use Jenssegers\Blade\Blade;
 $diagnosisid = $_GET['diagnosisid'] ?? '';
 $code = $_GET['code'] ?? '';
 $name = $_GET['name'] ?? '';
+$patient = $_GET['patient'] ?? '';
 $description = $_GET['description'] ?? '';
 $sort = $_GET['sort'] ?? '';
 $direction = $_GET['direction'] ?? 'asc';
@@ -16,6 +17,11 @@ $params = ['%' . $code . '%', '%' . $name . '%', '%' . $description . '%'];
 if (!empty($diagnosisid)) {
     $query .= " AND diagnosisid = ?";
     $params[] = $diagnosisid;
+}
+
+if (!empty($patient)) {
+    $query .= " AND diagnosisid IN (SELECT diagnosis FROM patient_diagnosis WHERE patient = ?)";
+    $params[] = $patient;
 }
 
 if (!empty($code)) {

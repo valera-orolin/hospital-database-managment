@@ -30,5 +30,12 @@ if (!empty($sort)) {
 
 $doctors = executeQuery($query, $params);
 
+foreach ($doctors as &$doctor) { 
+    $doctor['link-appointments'] = [
+        'url' => "/controllers/appointments/index.php?doctorid=" . $doctor['doctorid'],
+        'text' => "Appointments"
+    ];
+}
+
 $blade = new Blade('../../views', '../../cache');
 echo $blade->make('doctors.index', ['doctors' => $doctors])->render();

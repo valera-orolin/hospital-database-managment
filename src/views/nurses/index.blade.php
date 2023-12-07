@@ -90,7 +90,9 @@
                                 <tr class="border-b hidden">
                                     <form id="edit-form-{{ $nurse['nurseid'] }}" action="/controllers/nurses/update.php" method="post">
                                         @foreach ($nurse as $key => $value)
-                                            @if ($key != 'nurseid')
+                                            @if (strpos($key, 'link-') === 0)
+                                                <td class="p-3 px-5"></td>
+                                            @elseif ($key != 'nurseid')
                                                 <td class="p-3 px-5">
                                                     <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
                                                 </td>
