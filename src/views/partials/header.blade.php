@@ -12,7 +12,7 @@
     <a href="/controllers/patients_diagnoses/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Patients - Diagnoses</a>
     <a href="/controllers/allergies/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Allergies</a>
     <a href="/controllers/patients_allergies/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Patients - Allergies</a>
-    <a href="/controllers/prescribtions/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Prescribtions</a>
+    <a href="/controllers/prescriptions/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Prescriptions</a>
     <a href="/controllers/blocks/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Blocks</a>
     <a href="/controllers/rooms/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Rooms</a>
     <a href="/controllers/duties/index.php" class="inline-block px-4 py-2 hover:bg-black hover:text-white transition-all ease-in-out duration-300">Duties</a>

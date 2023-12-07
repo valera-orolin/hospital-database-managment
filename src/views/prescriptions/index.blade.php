@@ -17,22 +17,22 @@
             </div>
 
             <div class="px-12 pb-10">
-                <div class="text-center text-5xl mb-8 font-bold">Patients</div>
+                <div class="text-center text-5xl mb-8 font-bold">Prescriptions</div>
 
-                <!-- Filter and sort form -->
-                <form action="/controllers/patients/index.php" method="get" class="mb-4">
+                <form action="/controllers/prescriptions/index.php" method="get" class="mb-4">
                     <div class="space-y-2">
                         Filter by
-                        <input type="text" name="personalnumber" placeholder="Personal Number" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="name" placeholder="Name" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="address" placeholder="Address" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="phone" placeholder="Phone" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="doctor" placeholder="Doctor" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="patient" placeholder="Patient" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="medication" placeholder="Medication" class="border rounded px-3 py-2 mr-2">
+                        <input type="date" name="date" placeholder="Date" class="border rounded px-3 py-2 mr-2">
                     </div>
                     <div class="mt-2 space-y-2">
                         Sort by
                         <select name="sort" class="border rounded px-3 py-2 mr-2">
                             <option value="">Select field</option>
-                            <option value="name">Name</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="medication">Medication</option>
                         </select>
                         <select name="direction" class="border rounded px-3 py-2 mr-2">
                             <option value="asc">Ascending</option>
@@ -40,15 +40,16 @@
                         </select>
                     </div>
                     <input type="submit" value="Submit" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-200">
-                </form>
+                </form>                
 
                 <!-- Create form -->
-                <form action="/controllers/patients/store.php" method="post" class="mb-4">
+                <form action="/controllers/prescriptions/store.php" method="post" class="mb-4">
                     <div class="space-y-2">
-                        <input type="text" name="personalnumber" placeholder="Personal Number" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="name" placeholder="Name" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="address" placeholder="Address" class="border rounded px-3 py-2 mr-2">
-                        <input type="text" name="phone" placeholder="Phone" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="doctor" placeholder="Doctor" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="patient" placeholder="Patient" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="medication" placeholder="Medication" class="border rounded px-3 py-2 mr-2">
+                        <input type="date" name="date" placeholder="Date" class="border rounded px-3 py-2 mr-2">
+                        <input type="text" name="description" placeholder="Description" class="border rounded px-3 py-2 mr-2">
                     </div>
                     <input type="submit" value="Create New" class="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-all ease-in-out duration-200">
                 </form>
@@ -58,17 +59,17 @@
                     <table class="w-full text-md bg-white shadow-md rounded mb-4">
                         <thead>
                             <tr class="border-b">
-                                @if (isset($patients[0]))
-                                    @foreach ($patients[0] as $key => $value)
+                                @if (isset($prescriptions[0]))
+                                    @foreach ($prescriptions[0] as $key => $value)
                                         <th class="text-left p-3 px-5">{{ $key }}</th>
                                     @endforeach
                                 @endif
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($patients as $patient)
+                            @foreach ($prescriptions as $prescription)
                                 <tr class="border-b hover:bg-orange-100">
-                                    @foreach ($patient as $value)
+                                    @foreach ($prescription as $value)
                                         @if (is_array($value) && isset($value['url']) && isset($value['text']))
                                             <td class="p-3 px-5"><a href="{{ $value['url'] }}" class="text-gray-500 hover:text-gray-900 hover:underline">{{ $value['text'] }}</a></td>
                                         @else
@@ -79,8 +80,11 @@
 
                                     <!-- Delete form -->
                                     <td class="text-red-500 p-3 px-5">
-                                        <form id="delete-form-{{ $patient['personalnumber'] }}" action="/controllers/patients/destroy.php" method="post" onsubmit="return confirm('Are you sure you want to delete this record?');">
-                                            <input type="hidden" name="personalnumber" value="{{ $patient['personalnumber'] }}">
+                                        <form id="delete-form" action="/controllers/prescriptions/destroy.php" method="post" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            <input type="hidden" name="doctor" value="{{ $prescription['doctor'] }}">
+                                            <input type="hidden" name="patient" value="{{ $prescription['patient'] }}">
+                                            <input type="hidden" name="medication" value="{{ $prescription['medication'] }}">
+                                            <input type="hidden" name="date" value="{{ $prescription['date'] }}">
                                             <button type="submit" class="bg-transparent border-none">
                                                 <i class="fas fa-trash"></i>
                                             </button>
@@ -90,18 +94,26 @@
 
                                 <!-- Update form -->
                                 <tr class="border-b hidden">
-                                    <form id="edit-form-{{ $patient['personalnumber'] }}" action="/controllers/patients/update.php" method="post">
-                                        @foreach ($patient as $key => $value)
-                                            <td class="p-3 px-5">
-                                                <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
-                                            </td>
+                                    <form id="edit-form" action="/controllers/prescriptions/update.php" method="post">
+                                        @foreach ($prescription as $key => $value)
+                                            @if (strpos($key, 'link-') === 0)
+                                                <td class="p-3 px-5"></td>
+                                            @elseif ($key != 'doctor' && $key != 'patient' && $key != 'medication' && $key != 'date')
+                                                <td class="p-3 px-5">
+                                                    <input type="text" name="{{ $key }}" value="{{ $value }}" class="border-none focus:outline-none focus:ring-0">
+                                                </td>
+                                            @else
+                                                <td class="p-3 px-5">
+                                                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                                                </td>
+                                            @endif
                                         @endforeach
                                         <td class="p-3 px-5 text-blue-500 cursor-pointer">
                                             <button type="submit" class="bg-transparent border-none">
                                                 <i class="fas fa-check"></i>
                                             </button>
-                                        </td>                    
-                                    </form>                           
+                                        </td>
+                                    </form>
                                 </tr>
                             @endforeach
                         </tbody>
