@@ -36,6 +36,11 @@ foreach ($hospitalizations as &$hospitalization) {
         'url' => "/controllers/patients/index.php?personalnumber=" . $hospitalization['patient'],
         'text' => $patient[0]['name']
     ];
+
+    $hospitalization['link-room'] = [
+        'url' => "/controllers/rooms/index.php?roomnumber=" . $hospitalization['room'],
+        'text' => $hospitalization['room']
+    ];
 }
 
 $blade = new Blade('../../views', '../../cache');

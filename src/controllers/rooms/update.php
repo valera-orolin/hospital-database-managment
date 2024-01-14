@@ -7,7 +7,7 @@ $roomtype = $_POST['roomtype'] ?? '';
 $block = $_POST['block'] ?? '';
 $isavailable = $_POST['isavailable'] ?? '';
 
-if (!empty($roomnumber) && !empty($roomtype) && !empty($block) && !empty($isavailable)) {
+if (!empty($roomnumber) && !empty($roomtype) && !empty($block)) {
     $query = "UPDATE room SET roomtype = ?, block = ?, isavailable = ? WHERE roomnumber = ?";
     $params = [$roomtype, $block, $isavailable, $roomnumber];
 
